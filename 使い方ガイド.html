@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>バリューランタン — 君だけの炎を見つけよう</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0d0a06;
+      --bg-subtle: #1a1207;
+      --text: #f5e6c8;
+      --text-dim: #a69272;
+      --text-muted: #8a7456;
+      --accent: #ffb84d;
+      --accent-bright: #ffcc80;
+      --accent-deep: #ff8c00;
+      --border: #3d2a0f;
+      --glow: rgba(255, 153, 0, 0.15);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 140, 0, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-lantern {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .hero-flames {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: -4px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-flame {
+      width: 20px;
+      height: 34px;
+      background: radial-gradient(ellipse at 50% 90%, #ff6600 0%, #ff9900 40%, #ffcc00 70%, transparent 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: flicker 2s ease-in-out infinite alternate;
+      filter: blur(0.5px);
+    }
+
+    .hero-flame:nth-child(1) {
+      animation-duration: 2.2s;
+    }
+
+    .hero-flame:nth-child(2) {
+      width: 24px;
+      height: 40px;
+    }
+
+    .hero-flame:nth-child(3) {
+      animation-delay: 0.7s;
+      animation-duration: 1.8s;
+    }
+
+    @keyframes flicker {
+      0% {
+        transform: scaleY(1) scaleX(1) rotate(-2deg);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scaleY(1.1) scaleX(0.93) rotate(1deg);
+        opacity: 0.85;
+      }
+
+      100% {
+        transform: scaleY(0.94) scaleX(1.04) rotate(-1deg);
+        opacity: 1;
+      }
+    }
+
+    .hero-lantern-body {
+      width: 80px;
+      margin: 0 auto;
+    }
+
+    .hero-lantern-cap {
+      height: 8px;
+      background: linear-gradient(180deg, #8a6e3a, #4a3a1a);
+      border-radius: 3px 3px 0 0;
+      position: relative;
+    }
+
+    .hero-lantern-cap::before {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 18px;
+      height: 6px;
+      border: 2px solid #6b5528;
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .hero-lantern-glass {
+      height: 60px;
+      background: radial-gradient(ellipse at center top, rgba(255, 170, 40, 0.2) 0%, rgba(255, 100, 0, 0.05) 60%, rgba(26, 18, 7, 0.8) 100%);
+      border-left: 2px solid rgba(138, 110, 58, 0.5);
+      border-right: 2px solid rgba(138, 110, 58, 0.5);
+      box-shadow: 0 0 60px var(--glow), inset 0 0 30px rgba(255, 153, 0, 0.06);
+    }
+
+    .hero-lantern-base {
+      height: 8px;
+      background: linear-gradient(180deg, #4a3a1a, #8a6e3a);
+      border-radius: 0 0 3px 3px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .hero .tagline {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      color: var(--text-dim);
+      font-weight: 300;
+      margin-bottom: 32px;
+    }
+
+    .hero .scroll-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 40px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .hero .scroll-hint span {
+      display: block;
+      margin-top: 4px;
+      font-size: 1.2rem;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(6px);
+      }
+    }
+
+    /* ── Sections ── */
+    .section {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* ── Intro (バリューくん自己紹介) ── */
+    .intro-layout {
+      display: flex;
+      gap: 0;
+      align-items: stretch;
+    }
+
+    .intro-image-wrap {
+      flex-shrink: 0;
+      width: 260px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: -40px;
+      z-index: 1;
+    }
+
+    .intro-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 30px rgba(255, 140, 0, 0.25)) drop-shadow(0 0 60px rgba(255, 100, 0, 0.1));
+    }
+
+    .intro-card {
+      flex: 1;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 28px 32px 56px;
+      position: relative;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .intro-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-deep), var(--accent), var(--accent-deep), transparent);
+    }
+
+    .intro-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-bright);
+      margin-bottom: 16px;
+    }
+
+    .intro-speech {
+      font-size: 1rem;
+      line-height: 2;
+      color: var(--text);
+    }
+
+    .intro-speech p {
+      margin-bottom: 16px;
+    }
+
+    .intro-speech p:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 680px) {
+      .intro-layout {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .intro-image-wrap {
+        width: 200px;
+        margin-right: 0;
+        margin-bottom: -30px;
+      }
+
+      .intro-image-wrap img {
+        filter: drop-shadow(0 0 24px rgba(255, 140, 0, 0.2));
+      }
+
+      .intro-card {
+        padding: 40px 20px 24px;
+      }
+    }
+
+    /* ── What is (これ何？) ── */
+    .what-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .what-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      transition: border-color 0.3s;
+    }
+
+    .what-item:hover {
+      border-color: var(--accent-deep);
+    }
+
+    .what-item-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .what-item-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent-bright);
+      margin-bottom: 8px;
+    }
+
+    .what-item-desc {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    /* ── Steps ── */
+    .steps {
+      margin-top: 24px;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step-icon {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-subtle);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      position: relative;
+    }
+
+    .step:hover .step-icon {
+      border-color: var(--accent-deep);
+      box-shadow: 0 0 20px rgba(255, 140, 0, 0.15);
+    }
+
+    .step-number {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-deep);
+      color: var(--bg);
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent-bright);
+      margin-bottom: 6px;
+    }
+
+    .step-part {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .step-question {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: rgba(255, 140, 0, 0.06);
+      border-left: 3px solid var(--accent-deep);
+      border-radius: 0 6px 6px 0;
+      font-size: 0.9rem;
+      color: var(--accent-bright);
+      font-style: italic;
+    }
+
+    /* ── Rules ── */
+    .rules-list {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .rule {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .rule-icon {
+      flex-shrink: 0;
+      font-size: 1.4rem;
+      line-height: 1.6;
+    }
+
+    .rule-text {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .rule-text strong {
+      color: var(--accent-bright);
+      font-weight: 700;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 80px 24px 100px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .cta-box {
+      background: var(--bg-subtle);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 200px;
+      background: radial-gradient(ellipse at center bottom, rgba(255, 140, 0, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-emoji {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .cta-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .cta-desc {
+      font-size: 1rem;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+      line-height: 1.8;
+    }
+
+    .cta-command {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff8c00, #ff6600);
+      color: #0d0a06;
+      font-size: 1.3rem;
+      font-weight: 900;
+      padding: 14px 40px;
+      border-radius: 50px;
+      letter-spacing: 0.1em;
+      box-shadow: 0 4px 30px rgba(255, 140, 0, 0.3);
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 4px 30px rgba(255, 140, 0, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 4px 50px rgba(255, 140, 0, 0.5);
+      }
+    }
+
+    .cta-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.7rem;
+      color: var(--border);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Responsive ── */
+    @media (min-width: 600px) {
+      .what-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section {
+        padding: 60px 16px;
+      }
+
+      .step {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .intro-card {
+        padding: 24px 20px;
+      }
+
+      .cta-box {
+        padding: 36px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero-lantern">
+      <div class="hero-flames">
+        <div class="hero-flame"></div>
+        <div class="hero-flame"></div>
+        <div class="hero-flame"></div>
+      </div>
+      <div class="hero-lantern-body">
+        <div class="hero-lantern-cap"></div>
+        <div class="hero-lantern-glass"></div>
+        <div class="hero-lantern-base"></div>
+      </div>
+    </div>
+    <h1>VALUE LANTERN</h1>
+    <p class="tagline">君だけの炎を見つけよう</p>
+    <div class="scroll-hint">
+      はじめての人はスクロール
+      <span>&#8595;</span>
+    </div>
+  </section>
+
+  <!-- ===== バリューくん自己紹介 ===== -->
+  <section class="section">
+    <h2 class="section-title">&#x1F525; バリューくんって誰？</h2>
+    <div class="intro-layout">
+      <div class="intro-image-wrap">
+        <img src="バリューくんキャラクター/バリューくん立ち絵_透過.png" alt="炎の妖精バリュー">
+      </div>
+      <div class="intro-card">
+        <div class="intro-name">&#x1F525; 炎の妖精バリュー</div>
+        <div class="intro-speech">
+          <p>
+            よぉ！ 俺はバリュー、炎の妖精だ&#x1F525;&#x2728;<br>
+            見た目は子供だけど、妖精だから年齢とかよくわかんない。まぁ細かいことは気にすんな！
+          </p>
+          <p>
+            俺の仕事はさ、君の中にある「本当に大事な価値観」を一緒に探すこと&#x1F4AA;<br>
+            人生って忙しいと、自分が何を大切にしてるのか見えなくなるじゃん？
+            そういうとき、俺みたいな相棒がいると心強いっしょ？
+          </p>
+          <p>
+            ちなみに趣味はキャンプファイヤーと、渾身のギャグをかますこと！<br>
+            妖精界では"炎上芸人"って呼ばれてる。俺は気に入ってるけどね&#x1F606;
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== これ何？ ===== -->
+  <section class="section">
+    <h2 class="section-title">&#x1F3EE; バリューランタンって何？</h2>
+    <p style="color: var(--text-dim); margin-bottom: 8px;">
+      バリューランタンは、対話しながら自分の価値観を見つけていく体験型のセッション。
+      バリューくんと会話するだけで、自分だけの「ランタン」が完成する。
+    </p>
+    <div class="what-grid">
+      <div class="what-item">
+        <div class="what-item-icon">&#x1F4AC;</div>
+        <div class="what-item-title">対話するだけ</div>
+        <div class="what-item-desc">
+          テストでも診断でもない。バリューくんの質問に、思いつくまま答えるだけ。正解も不正解もなし。
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-item-icon">&#x23F1;</div>
+        <div class="what-item-title">15〜20分くらい</div>
+        <div class="what-item-desc">
+          5つのステップを順番に進む。途中で止めてもOK、じっくり超えてもOK。自分のペースで。
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-item-icon">&#x1F504;</div>
+        <div class="what-item-title">何度でもやり直せる</div>
+        <div class="what-item-desc">
+          途中で「なんか違う」と思ったら、そのステップだけやり直せる。価値観は変わるもの。いつ作り直してもいい。
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-item-icon">&#x1F3B4;</div>
+        <div class="what-item-title">カードがもらえる</div>
+        <div class="what-item-desc">
+          セッションが終わると、君だけのバリューランタンカードが完成。炎がゆらゆら揺れるHTMLカードを持ち帰れる。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5ステップ ===== -->
+  <section class="section">
+    <h2 class="section-title">&#x1F6E4; 5つのステップ</h2>
+    <p style="color: var(--text-dim); margin-bottom: 8px;">
+      ランタンは5つのパーツでできている。1つずつ、バリューくんと一緒に見つけていく。
+    </p>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-icon">
+          &#x1F525;
+          <div class="step-number">1</div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">炎を見つける</div>
+          <div class="step-part">&#x1F525; ランタンの炎 = 君の核心的な価値観</div>
+          <div class="step-desc">
+            人生で一番大事なものを2つだけ選ぶ。「自由」「創造性」「家族」何だっていい。パッと浮かんだものから、バリューくんと一緒に掘り下げて、本当の炎を見つけていく。
+          </div>
+          <div class="step-question">「もし人生で一番大事なものを2つだけ選ぶとしたら？」</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">
+          &#x1F6E1;
+          <div class="step-number">2</div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">プロテクションを見つける</div>
+          <div class="step-part">&#x1F6E1; 炎を囲むガラス = 価値観を守る行動と人</div>
+          <div class="step-desc">
+            炎はむき出しだと消えちゃう。日常の中で、その価値観を守り育てるための行動と、支えてくれる人を探す。
+          </div>
+          <div class="step-question">「その炎を守る行動と、支えてくれる人は？」</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">
+          &#x1F527;
+          <div class="step-number">3</div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">ハンドルを見つける</div>
+          <div class="step-part">&#x1F527; ランタンの取っ手 = つい手放してしまうパターン</div>
+          <div class="step-desc">
+            人生が大変なとき、人はランタンを手放しちゃう。「どんなときに自分の価値観を忘れがちか」を知っておくと、握り直すのが早くなる。
+          </div>
+          <div class="step-question">「ランタンを手放しちゃうのはどんなとき？」</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">
+          &#x1F4A1;
+          <div class="step-number">4</div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">ライトを見つける</div>
+          <div class="step-part">&#x1F4A1; ランタンが放つ光 = 価値観が輝いた瞬間</div>
+          <div class="step-desc">
+            自分の炎にバチッとハマって動けたとき。大きなことじゃなくていい、小さな火花でOK。その感覚を思い出す。
+          </div>
+          <div class="step-question">「炎が一番輝いてたのはいつ？」</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">
+          &#x1F3EE;
+          <div class="step-number">5</div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">ランタン完成</div>
+          <div class="step-part">&#x1F3EE; 全パーツが揃って、ランタンが光る</div>
+          <div class="step-desc">
+            4つのパーツを振り返って、しっくりくるか確認。ランタンをどう日常に持ち帰るかを考えて、セッション完了。最後にバリューランタンカードが届く。
+          </div>
+          <div class="step-question">「この光をどう持ち歩く？」</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 大事なルール ===== -->
+  <section class="section">
+    <h2 class="section-title">&#x1F4DD; 知っておいてほしいこと</h2>
+    <div class="rules-list">
+      <div class="rule">
+        <div class="rule-icon">&#x2705;</div>
+        <div class="rule-text">
+          <strong>正解も不正解もない。</strong>
+          テストじゃないから、思ったことをそのまま答えてOK。
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">&#x1F504;</div>
+        <div class="rule-text">
+          <strong>途中でやり直せる。</strong>
+          「やっぱ違うな」と思ったら、いつでもそのステップだけやり直せる。
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">&#x1F331;</div>
+        <div class="rule-text">
+          <strong>価値観は変わるもの。</strong>
+          半年後に「なんか違う」と思ったら、また作り直せばいい。ランタンは何度でも灯せる。
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">&#x1F917;</div>
+        <div class="rule-text">
+          <strong>バリューくんは味方。</strong>
+          深い質問を投げてくるけど、追い詰めたりしない。一緒に探検する相棒。
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-icon">&#x23F0;</div>
+        <div class="rule-text">
+          <strong>時間は気にしなくていい。</strong>
+          目安は15〜20分。超えてもぜんぜん大丈夫、自分のペースで。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <div class="cta-emoji">&#x1F525;</div>
+      <div class="cta-title">準備はいい？</div>
+      <div class="cta-desc">
+        Claude Codeでこのプロジェクトを開いて、<br>
+        下のコマンドを入力するだけ。<br>
+        バリューくんが飛び出してくるよ。
+      </div>
+      <div class="cta-command">/点火</div>
+      <div class="cta-note">Claude Code のチャットに入力してね</div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    Value Lantern &mdash; 炎の妖精バリューと探す、あなただけの光
+  </footer>
+
+</body>
+
+</html>
